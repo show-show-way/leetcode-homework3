@@ -1,0 +1,32 @@
+#include <vector>
+#include <unordered_set>
+
+class Solution {
+public:
+    bool isValidSudoku(std::vector<std::vector<char>>& board) {
+        std::vector<std::unordered_set<char>> rows(9);
+        std::vector<std::unordered_set<char>> cols(9);
+        std::vector<std::unordered_set<char>> boxes(9);
+
+        for (int i = 0; i < 9; ++i) {
+            for (int j = 0; j < 9; ++j) {
+                char num = board[i][j];
+
+                if (num == '.') continue;
+
+                // Check if the number is already present in the current row, column, or box
+                int boxIndex = (i / 3) * 3 + j / 3;
+                if (rows[i].count(num) || cols[j].count(num) || boxes[boxIndex].count(num)) {
+                    return false; // If the number is found, the board is invalid
+                }
+
+                // Add the number to the corresponding row, column, and box
+                rows[i].insert(num);
+                cols[j].insert(num);
+                boxes[boxIndex].insert(num);
+            }
+        }
+
+        return true; // If no duplicates were found, the board is valid
+    }
+};
